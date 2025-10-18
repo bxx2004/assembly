@@ -2,6 +2,9 @@ package net.bxx2004.assembly_neoforge.api
 
 import net.bxx2004.assembly.network.controller.PacketSender
 import net.bxx2004.assembly.network.packet.AssemblyPacket
+import net.bxx2004.assembly.network.packet.entity.AssemblyEntity
+import net.minecraft.client.Minecraft
+import net.minecraft.client.player.LocalPlayer
 import net.neoforged.bus.api.Event
 
 /**
@@ -13,4 +16,12 @@ class AssemblyPacketReceiveEvent(
     val packet: AssemblyPacket,
     val sender: PacketSender
 ) : Event() {
+    inline fun <reified T : AssemblyEntity>bind(func:T.(player: LocalPlayer)->Unit){
+        packet.bind<T>{
+            func(Minecraft.getInstance().player!!)
+        }
+    }
+    inline fun <reified T : AssemblyEntity>bind(func:T.()->Unit){
+        packet.bind<T>(func)
+    }
 }

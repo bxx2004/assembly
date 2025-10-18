@@ -4,6 +4,7 @@ import net.bxx2004.assembly.Assembly
 import net.bxx2004.assembly.network.controller.PacketSender
 import net.bxx2004.assembly.network.packet.AssemblyPacket
 import net.bxx2004.assembly_bukkit.api.AssemblyPacketSendEvent
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import taboolib.platform.util.bukkitPlugin
 import java.util.*
@@ -30,7 +31,8 @@ class BukkitSender(val player: Player): PacketSender() {
         private val maps = hashMapOf<Player, BukkitSender>()
         val Player.asPacketSender: PacketSender
         get() = maps.computeIfAbsent(this) { BukkitSender(this) }
-
+        val PacketSender.asPlayer: Player
+            get() = Bukkit.getPlayer(this.name)!!
     }
 
 }

@@ -2,6 +2,7 @@ package net.bxx2004.assembly.network.controller
 
 import net.bxx2004.assembly.Assembly
 import net.bxx2004.assembly.network.packet.AssemblyPacket
+import net.bxx2004.assembly.network.packet.entity.AssemblyEntity
 import net.bxx2004.assembly.utils.BreakUtils
 import net.bxx2004.assembly.utils.BreakUtils.size
 import java.util.*
@@ -23,5 +24,16 @@ abstract class PacketSender {
         }else{
             sendReload(packet)
         }
+    }
+    fun send(packet: AssemblyEntity){
+        send(packet.toPacket())
+    }
+    fun response(transaction: UUID, packet: AssemblyPacket){
+        packet.meta.update(transaction)
+        send(packet)
+    }
+    fun response(transaction: UUID, packet: AssemblyEntity){
+        packet.checkMeta().update(transaction)
+        send(packet)
     }
 }

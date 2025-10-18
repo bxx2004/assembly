@@ -26,4 +26,22 @@ data class AssemblyIdentifier(
         result = 31 * result + path.hashCode()
         return result
     }
+
+    override fun toString(): String {
+        return "$namespace:$path"
+    }
+    companion object{
+        fun parse(str:String):AssemblyIdentifier{
+            return AssemblyIdentifier(str.split(":")[0], str.split(":")[1])
+        }
+        fun String.id():AssemblyIdentifier{
+            return parse(this)
+        }
+        fun List<String>.id():List<AssemblyIdentifier>{
+            return map { it.id() }
+        }
+        fun Array<String>.id():Array<AssemblyIdentifier>{
+            return map { it.id() }.toTypedArray()
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package net.bxx2004.assembly.network.packet
 
 import net.bxx2004.assembly.data.AssemblyIdentifier
+import java.util.UUID
 
 /**
  * @author 6hisea
@@ -9,6 +10,12 @@ import net.bxx2004.assembly.data.AssemblyIdentifier
  */
 data class AssemblyPacketMeta(
     val id: AssemblyIdentifier,
-    val timestamp: Long = System.currentTimeMillis(),
-    var type: AssemblyPacketType = AssemblyPacketType.NORMAL
-)
+    var timestamp: Long = System.currentTimeMillis(),
+    var type: AssemblyPacketType = AssemblyPacketType.NORMAL,
+    var transaction: UUID = UUID.randomUUID()
+){
+    fun update(transaction:UUID){
+        timestamp = System.currentTimeMillis()
+        this.transaction = transaction
+    }
+}
