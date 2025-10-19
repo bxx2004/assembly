@@ -22,7 +22,7 @@ object AssemblyNeoforge1218 {
     val LOGGER: Logger = LogManager.getLogger(ID)
     @SubscribeEvent
     private fun onClientSetup(event: FMLClientSetupEvent) {
-        Assembly.register(Side.CLIENT) { sender, packet ->
+        Assembly.init(Side.CLIENT) { sender, packet ->
             val e = AssemblyPacketReceiveEvent(packet,sender)
             NeoForge.EVENT_BUS.post(e)
         }
