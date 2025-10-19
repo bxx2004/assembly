@@ -5,6 +5,7 @@ import net.bxx2004.assembly.data.AssemblyIdentifier
 import net.bxx2004.assembly.network.controller.PacketSender
 import net.bxx2004.assembly.network.packet.AssemblyPacket
 import net.bxx2004.assembly.network.packet.AssemblyPacketMeta
+import net.bxx2004.assembly.utils.BreakUtils.gson
 
 /**
  * @author 6hisea
@@ -18,8 +19,10 @@ interface AssemblyEntity {
             AssemblyPacketMeta(id())
         )
         this::class.java.declaredFields.forEach { field ->
-            field.isAccessible = true
-            res.write(field.name,field.get(this))
+            if (field.name != "INSTANCE"){
+                field.isAccessible = true
+                res.write(field.name,field.get(this))
+            }
         }
         return res
     }
@@ -40,6 +43,9 @@ interface AssemblyEntity {
             val obj = T::class.java.getDeclaredConstructor().newInstance()
             func(obj)
             return obj
+        }
+        inline fun <reified T: AssemblyEntity>build(jsonString: String):T{
+            return gson.fromJson(jsonString,T::class.java)
         }
     }
 }

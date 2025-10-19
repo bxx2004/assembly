@@ -3,6 +3,8 @@ package net.bxx2004.assembly
 import net.bxx2004.assembly.application.AssemblyApplication
 import net.bxx2004.assembly.application.client.AssemblyInstance
 import net.bxx2004.assembly.application.client.ClientInstanceManager
+import net.bxx2004.assembly.application.server.ServerInstanceManager
+import net.bxx2004.assembly.data.Side
 import net.bxx2004.assembly.network.controller.PacketReceiver
 
 /**
@@ -16,15 +18,22 @@ class AssemblyRegister {
         Assembly.addListener(receiver)
         return this
     }
-    fun application(application:AssemblyApplication) : AssemblyRegister {
+    fun application(application:AssemblyApplication) : AssemblyApplication {
         Assembly.registerApplication(application)
-        return this
+        return application
     }
-    fun clientFactory(clazz: Class<AssemblyInstance>) : AssemblyRegister {
-        ClientInstanceManager.registerFactory(clazz)
-        return this
-    }
-    fun build(func:AssemblyRegister.()->Unit) {
-        func(this)
+    companion object{
+        fun AssemblyApplication.registerServerInstance(instance: AssemblyInstance):AssemblyApplication {
+            if (Assembly.side == Side.SERVER){
+                ServerInstanceManager.registerServerInstance(this, instance)
+            }
+            return this
+        }
+        fun AssemblyApplication.registerClientInstance(instance: Class<out AssemblyInstance>):AssemblyApplication {
+            if (Assembly.side == Side.CLIENT){
+                ClientInstanceManager.registerFactory(instance)
+            }
+            return this
+        }
     }
 }

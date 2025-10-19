@@ -23,8 +23,10 @@ abstract class AssemblyInstance(val id: AssemblyIdentifier){
         val hmap = hashMapOf<String, Any?>()
         this::class.java.declaredFields.forEach { field ->
             field.isAccessible = true
-            val value = field.get(this)
-            hmap[field.name] = value
+            if (field.name != "INSTANCE") {
+                val value = field.get(this)
+                hmap[field.name] = value
+            }
         }
         return hmap
     }

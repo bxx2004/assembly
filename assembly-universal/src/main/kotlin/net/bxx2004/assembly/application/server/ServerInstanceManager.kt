@@ -17,32 +17,36 @@ import net.bxx2004.assembly.network.packet.entity.AssemblyEntity
  * @description: None
  */
 object ServerInstanceManager{
+    fun registerServerInstance(app: AssemblyApplication, instance: AssemblyInstance) {
+        (app.instances as ArrayList<AssemblyInstance>).add(instance)
+    }
     fun AssemblyApplication.addInstance(ins: AssemblyInstance,sender: PacketSender) {
-        (instances as ArrayList<AssemblyInstance>).add(ins)
         AssemblyEntity.build<InstanceAdd> {
             appId = this@addInstance.id
             instanceId = ins.id
             attrs = ins.getAttrs()
+            name = ins::class.java.simpleName
         }.send(sender)
     }
     fun AssemblyApplication.removeInstance(ins: AssemblyInstance,sender: PacketSender) {
-        (instances as ArrayList<AssemblyInstance>).remove(ins)
         AssemblyEntity.build<InstanceDelete> {
             appId = this@removeInstance.id
             instanceId = ins.id
         }.send(sender)
     }
     fun AssemblyApplication.removeInstanceById(id: AssemblyIdentifier,sender: PacketSender) {
-        (instances as ArrayList<AssemblyInstance>).removeIf { it.id == id }
         AssemblyEntity.build<InstanceDelete> {
             appId = this@removeInstanceById.id
             instanceId = id
         }.send(sender)
     }
     fun AssemblyApplication.removeAllInstance(sender: PacketSender) {
-        (instances as ArrayList<AssemblyInstance>).clear()
         AssemblyEntity.build<InstanceDeleteAll> {
             appId = this@removeAllInstance.id
         }.send(sender)
+    }
+    fun AssemblyApplication.sync(sender: PacketSender) {
+        removeAllInstance(sender)
+        instances.forEach { addInstance(it,sender) }
     }
 }

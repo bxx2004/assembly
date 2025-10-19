@@ -1,6 +1,7 @@
 package net.bxx2004.assembly.network.packet
 
 import com.google.gson.JsonObject
+import com.google.gson.internal.LinkedTreeMap
 import net.bxx2004.assembly.network.packet.entity.AssemblyEntity
 import net.bxx2004.assembly.utils.BreakUtils.gson
 
@@ -30,65 +31,75 @@ open class AssemblyPacket(open val meta: AssemblyPacketMeta){
         val obj = obje ?: clazz.getDeclaredConstructor().newInstance()
         clazz.declaredFields.forEach { field ->
             field.isAccessible = true
-            when (field.type) {
-                AssemblyPacketMeta::class.java -> {
-                    field.set(obj,meta)
-                }
-                Byte::class.java -> {
-                    field.set(obj, readByte(field.name))
-                }
-                Byte::class.javaPrimitiveType -> {
-                    field.setByte(obj, readByte(field.name))
-                }
-                Short::class.java -> {
-                    field.set(obj, readShort(field.name))
-                }
-                Short::class.javaPrimitiveType -> {
-                    field.setShort(obj, readShort(field.name))
-                }
-                Int::class.java -> {
-                    field.set(obj, readInt(field.name))
-                }
-                Int::class.javaPrimitiveType -> {
-                    field.setInt(obj, readInt(field.name))
-                }
-                Long::class.java -> {
-                    field.set(obj, readLong(field.name))
-                }
-                Long::class.javaPrimitiveType -> {
-                    field.setLong(obj, readLong(field.name))
-                }
-                Float::class.java -> {
-                    field.set(obj, readFloat(field.name))
-                }
-                Float::class.javaPrimitiveType -> {
-                    field.setFloat(obj, readFloat(field.name))
-                }
-                Double::class.java -> {
-                    field.set(obj, readDouble(field.name))
-                }
-                Double::class.javaPrimitiveType -> {
-                    field.setDouble(obj, readDouble(field.name))
-                }
-                Boolean::class.java -> {
-                    field.set(obj, readBoolean(field.name))
-                }
-                Boolean::class.javaPrimitiveType -> {
-                    field.setBoolean(obj, readBoolean(field.name))
-                }
-                Char::class.java -> {
-                    field.set(obj, readChar(field.name))
-                }
-                Char::class.javaPrimitiveType -> {
-                    field.setChar(obj, readChar(field.name))
-                }
-                String::class.java -> {
-                    field.set(obj, readString(field.name))
-                }
-                else -> {
-                    field.set(obj,read(field.name))
+            if (field.name != "INSTANCE") {
+                when (field.type) {
+                    AssemblyPacketMeta::class.java -> {
+                        field.set(obj,meta)
+                    }
+                    Byte::class.java -> {
+                        field.set(obj, readByte(field.name))
+                    }
+                    Byte::class.javaPrimitiveType -> {
+                        field.setByte(obj, readByte(field.name))
+                    }
+                    Short::class.java -> {
+                        field.set(obj, readShort(field.name))
+                    }
+                    Short::class.javaPrimitiveType -> {
+                        field.setShort(obj, readShort(field.name))
+                    }
+                    Int::class.java -> {
+                        field.set(obj, readInt(field.name))
+                    }
+                    Int::class.javaPrimitiveType -> {
+                        field.setInt(obj, readInt(field.name))
+                    }
+                    Long::class.java -> {
+                        field.set(obj, readLong(field.name))
+                    }
+                    Long::class.javaPrimitiveType -> {
+                        field.setLong(obj, readLong(field.name))
+                    }
+                    Float::class.java -> {
+                        field.set(obj, readFloat(field.name))
+                    }
+                    Float::class.javaPrimitiveType -> {
+                        field.setFloat(obj, readFloat(field.name))
+                    }
+                    Double::class.java -> {
+                        field.set(obj, readDouble(field.name))
+                    }
+                    Double::class.javaPrimitiveType -> {
+                        field.setDouble(obj, readDouble(field.name))
+                    }
+                    Boolean::class.java -> {
+                        field.set(obj, readBoolean(field.name))
+                    }
+                    Boolean::class.javaPrimitiveType -> {
+                        field.setBoolean(obj, readBoolean(field.name))
+                    }
+                    Char::class.java -> {
+                        field.set(obj, readChar(field.name))
+                    }
+                    Char::class.javaPrimitiveType -> {
+                        field.setChar(obj, readChar(field.name))
+                    }
+                    String::class.java -> {
+                        field.set(obj, readString(field.name))
+                    }
+
+                    else -> {
+                        val value = read<Any>(field.name)
+                        if (value::class.java == LinkedTreeMap::class.java) {
+                            field.set(obj, gson.fromJson(gson.toJson(value),field.type))
+                        }else{
+                            field.set(obj,read(field.name))
+                        }
+                    }
                 }
             }
+
+
         }
         return obj
     }
