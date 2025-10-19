@@ -16,7 +16,7 @@ class AssemblyPacketReceiveEvent(
     val packet: AssemblyPacket,
     val sender: PacketSender
 ) : BukkitProxyEvent() {
-    inline fun <reified T : AssemblyEntity>bind(func:T.(player: Player)->Unit){
+    inline fun <reified T : AssemblyEntity>bindPlayer(func:T.(player: Player)->Unit){
         packet.bind<T>{
             func(sender.asPlayer)
         }

@@ -128,6 +128,9 @@ open class AssemblyPacket(open val meta: AssemblyPacketMeta){
     fun debug(){
         println(gson.toJson(this))
     }
+    fun json():String {
+        return gson.toJson(this)
+    }
     fun encode():ByteArray {
         return gson.toJson(this).toByteArray()
     }

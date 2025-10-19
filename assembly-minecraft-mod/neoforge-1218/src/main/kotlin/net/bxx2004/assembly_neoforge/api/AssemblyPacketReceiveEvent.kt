@@ -16,7 +16,7 @@ class AssemblyPacketReceiveEvent(
     val packet: AssemblyPacket,
     val sender: PacketSender
 ) : Event() {
-    inline fun <reified T : AssemblyEntity>bind(func:T.(player: LocalPlayer)->Unit){
+    inline fun <reified T : AssemblyEntity>bindPlayer(func:T.(player: LocalPlayer)->Unit){
         packet.bind<T>{
             func(Minecraft.getInstance().player!!)
         }

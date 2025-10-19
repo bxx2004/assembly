@@ -3,6 +3,7 @@ package net.bxx2004.assembly_neoforge
 import net.bxx2004.assembly.Assembly
 import net.bxx2004.assembly.data.Side
 import net.bxx2004.assembly_neoforge.api.AssemblyPacketReceiveEvent
+import net.minecraft.client.Minecraft
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.fml.common.Mod
@@ -28,9 +29,5 @@ object AssemblyNeoforge1218 {
         Assembly.DATA_DIR = "assembly-mod"
         File(Assembly.DATA_DIR).mkdirs()
         LOGGER.log(Level.INFO, "assembly_neoforge_1218...")
-    }
-    @SubscribeEvent
-    fun onReceive(e:AssemblyPacketReceiveEvent) {
-        e.packet.debug()
     }
 }

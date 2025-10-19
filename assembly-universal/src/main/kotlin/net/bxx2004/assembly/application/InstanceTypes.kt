@@ -1,4 +1,4 @@
-package net.bxx2004.assembly.application.client
+package net.bxx2004.assembly.application
 
 /**
  * @author 6hisea

@@ -2,18 +2,19 @@ package net.bxx2004.assembly.application.entity
 
 import net.bxx2004.assembly.data.AssemblyIdentifier
 import net.bxx2004.assembly.data.AssemblyIdentifier.Companion.id
-import net.bxx2004.assembly.network.packet.AssemblyPacketMeta
 import net.bxx2004.assembly.network.packet.entity.AssemblyEntity
 
 /**
  * @author 6hisea
- * @date  2025/10/18 12:35
+ * @date  2025/10/19 11:40
  * @description: None
  */
-class FunctionResponse : AssemblyEntity {
+class InstanceAdd : AssemblyEntity {
     override fun id(): AssemblyIdentifier {
-        return "application:function_response".id()
+        return "application:instance_add".id()
     }
-    lateinit var meta: AssemblyPacketMeta
-    var response: Any?=null
+    lateinit var appId:AssemblyIdentifier
+    lateinit var instanceId:AssemblyIdentifier
+    var attrs = mapOf<String,Any?>()
+    lateinit var name: String
 }

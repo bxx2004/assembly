@@ -2,18 +2,17 @@ package net.bxx2004.assembly.application.entity
 
 import net.bxx2004.assembly.data.AssemblyIdentifier
 import net.bxx2004.assembly.data.AssemblyIdentifier.Companion.id
-import net.bxx2004.assembly.network.packet.AssemblyPacketMeta
 import net.bxx2004.assembly.network.packet.entity.AssemblyEntity
 
 /**
  * @author 6hisea
- * @date  2025/10/18 12:35
+ * @date  2025/10/19 11:33
  * @description: None
  */
-class FunctionResponse : AssemblyEntity {
+class InstanceDelete : AssemblyEntity {
     override fun id(): AssemblyIdentifier {
-        return "application:function_response".id()
+        return "application:instance_delete".id()
     }
-    lateinit var meta: AssemblyPacketMeta
-    var response: Any?=null
+    lateinit var appId:AssemblyIdentifier
+    lateinit var instanceId:AssemblyIdentifier
 }

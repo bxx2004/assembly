@@ -2,6 +2,7 @@ package net.bxx2004.assembly
 
 import net.bxx2004.assembly.application.AssemblyApplication
 import net.bxx2004.assembly.application.client.ClientResourceManager
+import net.bxx2004.assembly.application.server.ServerInstanceManager
 import net.bxx2004.assembly.data.Side
 import net.bxx2004.assembly.modules.Math
 import net.bxx2004.assembly.network.controller.BreakDataManager
@@ -20,11 +21,15 @@ import java.util.concurrent.CopyOnWriteArrayList
 object Assembly {
     var MAX_PACKET_SIZE = 1048575L
     var CHANNEL = "assembly:network"
-    private var receivers:PacketReceiver?=null
-    private val listeners = CopyOnWriteArrayList<PacketReceiver>()
     var side: Side = Side.COMMON
     var DATA_DIR = ""
+
+
+    private var receivers:PacketReceiver?=null
+    private val listeners = CopyOnWriteArrayList<PacketReceiver>()
     private val applications = CopyOnWriteArrayList<AssemblyApplication>()
+
+    private var isInitialized = false
 
     fun registerApplication(application:AssemblyApplication) {
         applications.add(application)
@@ -33,7 +38,9 @@ object Assembly {
         return applications
     }
 
-    fun register(a: Side, func:(PacketSender, AssemblyPacket)->Unit) {
+    fun init(a: Side, func:(PacketSender, AssemblyPacket)->Unit) {
+        if (isInitialized) return
+        isInitialized = true
         side = a
         if (side == Side.CLIENT) {
             listeners.add(ClientResourceManager)
@@ -49,7 +56,11 @@ object Assembly {
             }
         }
     }
-
+    fun register(func:AssemblyRegister.()->Unit){
+        val reg = AssemblyRegister()
+        func(reg)
+    }
+    @Deprecated("use register")
     fun addListener(receiver: PacketReceiver) {
         listeners.add(receiver)
     }
@@ -69,7 +80,7 @@ object Assembly {
         receivers?.onReceive(sender, receiver)
         listeners.forEach { it.onReceive(sender, receiver) }
     }
-    fun registerModules(){
+    private fun registerModules(){
         Math
     }
 }

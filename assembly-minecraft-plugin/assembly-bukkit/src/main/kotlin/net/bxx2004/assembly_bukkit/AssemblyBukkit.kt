@@ -11,6 +11,8 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerRegisterChannelEvent
+import taboolib.common.env.RuntimeDependencies
+import taboolib.common.env.RuntimeDependency
 import taboolib.common.platform.Plugin
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.releaseResourceFile
@@ -19,13 +21,18 @@ import taboolib.module.configuration.Config
 import taboolib.module.configuration.Configuration
 import taboolib.platform.util.bukkitPlugin
 import java.io.File
-
+@RuntimeDependencies(
+    RuntimeDependency("com.google.code.gson:gson:2.2.4"),
+    RuntimeDependency("org.apache.commons:commons-crypto:1.2.0"),
+    RuntimeDependency("net.lingala.zip4j:zip4j:2.11.5"),
+    RuntimeDependency("org.openjdk.nashorn:nashorn-core:15.4")
+)
 object AssemblyBukkit : Plugin() {
     @Config("options.yml", migrate = true, autoReload = true)
     lateinit var options: Configuration
         private set
     override fun onEnable() {
-        Assembly.register(Side.SERVER){ sender, packet ->
+        Assembly.init(Side.SERVER){ sender, packet ->
             AssemblyPacketReceiveEvent(packet,sender).call()
         }
         ServerResourceManager.registerKeyProvider(

@@ -24,7 +24,7 @@ import javax.crypto.spec.SecretKeySpec
  * @date  2025/10/18 12:54
  * @description: None
  */
-object ClientResourceManager : PacketReceiver,ClientProxy() {
+object ClientResourceManager : PacketReceiver{
     private var key = "#empty"
     private var password = "#empty"
     private val packPath = File(Assembly.DATA_DIR, "resource_pack.zip")

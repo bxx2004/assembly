@@ -1,5 +1,4 @@
 plugins {
-    java
     id("org.jetbrains.kotlin.jvm") version "2.2.0"
 }
 

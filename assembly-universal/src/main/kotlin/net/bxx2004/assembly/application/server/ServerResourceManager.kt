@@ -20,7 +20,7 @@ import java.util.function.Supplier
  * @date  2025/10/18 13:44
  * @description: None
  */
-object ServerResourceManager : ServerProxy() {
+object ServerResourceManager{
     private var keyProvider = Supplier { "#empty" }
     private var passwordProvider = Supplier { "#empty" }
     fun registerKeyProvider(key: Supplier<String>,password: Supplier<String>) {
