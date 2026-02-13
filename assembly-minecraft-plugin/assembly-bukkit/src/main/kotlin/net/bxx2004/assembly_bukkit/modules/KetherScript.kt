@@ -17,6 +17,8 @@ object KetherScript : IModule() {
         return arrayOf("kether", "Kether", "KetherScript", "ketherscript", "ks", "kether-script", "kether_script")
     }
 
+
+
     fun eval(sender: ProxyCommandSender, vars: HashMap<String, Any?>, script: String): Any? {
         return KetherShell.eval(script, ScriptOptions.new {
             sender(sender)

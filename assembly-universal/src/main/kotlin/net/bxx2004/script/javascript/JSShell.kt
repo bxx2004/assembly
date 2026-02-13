@@ -1,7 +1,6 @@
 package net.bxx2004.script.javascript
 
 import net.bxx2004.script.*
-import net.bxx2004.script.error.ScriptTypeException
 import net.bxx2004.script.module.InstallAPI
 import net.bxx2004.script.source.ThorSource
 import org.openjdk.nashorn.api.scripting.NashornScriptEngine
@@ -43,7 +42,7 @@ class JSShell(val options: ThorOptions = ThorOptions.default()):ThorShell {
     ): Any? {
         if (compile != null){
             if (compile.adapt() !is JSCompile){
-                throw ScriptTypeException("ThorCompile is not a valid CompiledScript.")
+                throw RuntimeException("ThorCompile is not a valid CompiledScript.")
             }
             return compile.invokeFunction(name,args)
         }else{
@@ -70,7 +69,7 @@ class JSShell(val options: ThorOptions = ThorOptions.default()):ThorShell {
     }
     override fun injectFunction(function: ThorFunction,cache:Boolean) {
         if (function !is JSFunction){
-            throw ScriptTypeException("ThorFunction is not a valid JSFunction")
+            throw RuntimeException("ThorFunction is not a valid JSFunction")
         }
         engine.eval(function.compile())
     }

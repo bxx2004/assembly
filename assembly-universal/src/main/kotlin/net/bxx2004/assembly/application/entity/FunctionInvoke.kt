@@ -16,5 +16,6 @@ class FunctionInvoke : AssemblyEntity{
     }
     lateinit var meta: AssemblyPacketMeta
     lateinit var name: String
-    var args: Array<out Any>? = null
+    var args: ArrayList<Any>? = null
+    lateinit var appId:AssemblyIdentifier
 }

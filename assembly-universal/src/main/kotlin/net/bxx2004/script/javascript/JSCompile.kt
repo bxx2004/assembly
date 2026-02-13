@@ -1,6 +1,6 @@
 package net.bxx2004.script.javascript
 
-import net.bxx2004.script.*
+import net.bxx2004.script.ThorCompile
 import net.bxx2004.script.source.ThorSource
 import org.openjdk.nashorn.api.scripting.NashornScriptEngine
 import java.io.Reader

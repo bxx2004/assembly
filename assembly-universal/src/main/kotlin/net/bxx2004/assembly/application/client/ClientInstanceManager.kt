@@ -3,9 +3,10 @@ package net.bxx2004.assembly.application.client
 import com.google.gson.internal.LinkedTreeMap
 import net.bxx2004.assembly.application.AssemblyApplication
 import net.bxx2004.assembly.application.AssemblyApplication.Companion.instances
+import net.bxx2004.assembly.application.AssemblyInstance
 import net.bxx2004.assembly.data.AssemblyIdentifier
-import net.bxx2004.assembly.network.packet.AssemblyPacketMeta
 import net.bxx2004.assembly.utils.BreakUtils.gson
+import net.bxx2004.assembly.utils.findAllFields
 
 /**
  * @author 6hisea
@@ -16,18 +17,36 @@ object ClientInstanceManager{
 
     private val instanceFactory = HashMap<String, Class<out AssemblyInstance>>()
     fun registerFactory(instance: Class<out AssemblyInstance>) {
-        instanceFactory[instance.simpleName] = instance
+        if (instance.annotations.filterIsInstance<Redirect>().isNotEmpty()) {
+            val id = instance.annotations.filterIsInstance<Redirect>().first()
+            if (id.name == "superclass"){
+                instanceFactory[instance.superclass.simpleName] = instance
+            }else{
+                instanceFactory[id.name] = instance
+            }
+
+        }else{
+            instanceFactory[instance.simpleName] = instance
+        }
+
     }
     fun makeInstance(name: String,id: AssemblyIdentifier,attrs: Map<String,Any?>): AssemblyInstance {
-        val obj = if (instanceFactory[name]?.getDeclaredField("INSTANCE") != null) {
+        val obj = if (instanceFactory[name]?.declaredFields!!.map { it.name }.contains("INSTANCE")) {
             instanceFactory[name]?.getDeclaredField("INSTANCE")?.get(null) as AssemblyInstance
         }else{
-            instanceFactory[name]?.getDeclaredConstructor(AssemblyApplication::class.java)?.newInstance(id)
+            var target = try {
+                instanceFactory[name]?.getDeclaredConstructor(AssemblyIdentifier::class.java)?.newInstance(id)
+            }catch (e: NoSuchMethodException){
+                instanceFactory[name]?.getDeclaredConstructor()?.newInstance().apply {
+                    this!!.id = id
+                }
+            }
+            target
         }
         if (obj == null) {
             throw RuntimeException("Failed to create instance for $name")
         }
-        obj::class.java.declaredFields.forEach { field ->
+        obj::class.java.findAllFields().forEach { field ->
 
 
             field.isAccessible = true
@@ -104,15 +123,15 @@ object ClientInstanceManager{
         }
         return obj
     }
-    fun addClientInstance(app:AssemblyApplication,ins:AssemblyInstance) {
-        if (app.instances.map { it.id.path }.contains(ins.id.path)){
+    fun addClientInstance(app:AssemblyApplication,ins: AssemblyInstance) {
+        if (app.instances.map { it.id }.contains(ins.id)){
             return
         }
 
         (app.instances as ArrayList<AssemblyInstance>).add(ins)
         ins.mounted()
     }
-    fun removeClientInstance(app:AssemblyApplication,inst:AssemblyInstance) {
+    fun removeClientInstance(app:AssemblyApplication,inst: AssemblyInstance) {
         inst.unmounted()
         (app.instances as ArrayList<AssemblyInstance>).remove(inst)
     }

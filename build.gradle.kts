@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.2.0"
+    kotlin("jvm") version "2.3.0"
 }
 
 group = "net.bxx2004"
@@ -7,6 +7,22 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven {
+        url = uri("http://mavenrepo.revoist.cn")
+        isAllowInsecureProtocol = true
+    }
+
+}
+subprojects {
+    repositories {
+        maven {
+            url = uri("https://jitpack.io")
+        }
+        maven {
+            url = uri("http://mavenrepo.revoist.cn")
+            isAllowInsecureProtocol = true
+        }
+    }
 }
 
 dependencies {
@@ -17,5 +33,5 @@ tasks.test {
     useJUnitPlatform()
 }
 kotlin {
-    jvmToolchain(22)
+    jvmToolchain(21)
 }

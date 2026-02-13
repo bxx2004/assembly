@@ -2,7 +2,7 @@ package net.bxx2004.assembly.application.server
 
 import net.bxx2004.assembly.application.AssemblyApplication
 import net.bxx2004.assembly.application.AssemblyApplication.Companion.instances
-import net.bxx2004.assembly.application.client.AssemblyInstance
+import net.bxx2004.assembly.application.AssemblyInstance
 import net.bxx2004.assembly.application.entity.InstanceAdd
 import net.bxx2004.assembly.application.entity.InstanceDelete
 import net.bxx2004.assembly.application.entity.InstanceDeleteAll
@@ -20,6 +20,7 @@ object ServerInstanceManager{
     fun registerServerInstance(app: AssemblyApplication, instance: AssemblyInstance) {
         (app.instances as ArrayList<AssemblyInstance>).add(instance)
     }
+
     fun AssemblyApplication.addInstance(ins: AssemblyInstance,sender: PacketSender) {
         AssemblyEntity.build<InstanceAdd> {
             appId = this@addInstance.id
@@ -45,6 +46,7 @@ object ServerInstanceManager{
             appId = this@removeAllInstance.id
         }.send(sender)
     }
+
     fun AssemblyApplication.sync(sender: PacketSender) {
         removeAllInstance(sender)
         instances.forEach { addInstance(it,sender) }

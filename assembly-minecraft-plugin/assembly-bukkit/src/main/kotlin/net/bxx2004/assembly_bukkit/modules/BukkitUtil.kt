@@ -3,7 +3,6 @@ package net.bxx2004.assembly_bukkit.modules
 import net.bxx2004.script.module.IModule
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
-
 import org.bukkit.plugin.Plugin
 import taboolib.common.platform.Awake
 import taboolib.common.platform.ProxyCommandSender
@@ -13,7 +12,6 @@ import taboolib.common.platform.event.ProxyListener
 import taboolib.common.platform.function.registerBukkitListener
 import taboolib.expansion.dispatchCommandAsOp
 import taboolib.platform.util.bukkitPlugin
-import kotlin.collections.set
 
 @Awake
 object BukkitUtil : IModule(){

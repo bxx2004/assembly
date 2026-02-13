@@ -2,13 +2,13 @@
 You can use this tool to provide convenience for your network message transmission.
 
 ## Minecraft Implementation
-|  Platform   | minecraft-version  | assembly-version  | Status  |
-|  :----:  | :----:  | :----:  | :----:  |
-| Bukkit  | [1.9-1.21.9] | 1.0  | LTS  |
-| Velocity  | - | 1.0  | Plan  |
-| Bungeecord  | - | 1.0  | Plan  |
-| NeoForge  | [1.21.8-1.21.9) | 1.0  | LTS  |
-| FabricMC  | [1.21.8-1.21.9) | 1.0  | Plan  |
+|  Platform   | minecraft-version | assembly-version | Status |
+|  :----:  |:-----------------:|:----------------:|:------:|
+| Bukkit  |   [1.9-1.21.9]    |       2.0        |  LTS   |
+| Velocity  |         -         |       2.0        |  LTS   |
+| Bungeecord  |         -         |       2.0        |   NS   |
+| NeoForge  |  [1.21.1-1.21.9)  |       2.0        |  LTS   |
+| FabricMC  |  [1.21.1-1.21.9)  |       2.0        |  Plan  |
 
 If you are interested in this project, you can help achieve it
 

@@ -1,7 +1,8 @@
 package net.bxx2004.assembly.network.packet
 
+import net.bxx2004.assembly.Assembly
 import net.bxx2004.assembly.data.AssemblyIdentifier
-import java.util.UUID
+import java.util.*
 
 /**
  * @author 6hisea
@@ -18,4 +19,5 @@ data class AssemblyPacketMeta(
         timestamp = System.currentTimeMillis()
         this.transaction = transaction
     }
+
 }

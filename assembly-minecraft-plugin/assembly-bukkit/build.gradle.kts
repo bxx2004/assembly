@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     java
     id("io.izzel.taboolib") version "2.0.27"
-    id("org.jetbrains.kotlin.jvm") version "2.2.0"
+    id("org.jetbrains.kotlin.jvm") version "2.3.0"
 }
 
 taboolib {
@@ -17,6 +17,7 @@ taboolib {
         install(Bukkit)
         install(Kether)
         install(BukkitFakeOp)
+        install(BukkitHook)
     }
     description {
         name = "assembly-bukkit"
@@ -25,7 +26,7 @@ taboolib {
         }
     }
     version {
-        taboolib = "6.2.3-1a8d7125"
+        taboolib = "6.2.3-d4a5f0ea"
         //skipKotlinRelocate = true
     }
 }
@@ -42,10 +43,9 @@ dependencies {
     compileOnly("ink.ptms.core:v12105:12105:universal")
     compileOnly(kotlin("stdlib"))
     compileOnly(fileTree("libs"))
-    taboo(project(":assembly-universal")){
-        isTransitive = false
-    }
     compileOnly("io.netty:netty-all:5.0.0.Alpha2")
+    taboo(project(":assembly-minecraft"))
+    taboo(project(":assembly-universal"))
 }
 
 tasks.withType<JavaCompile> {
@@ -58,5 +58,5 @@ tasks.withType<KotlinCompile> {
     }
 }
 kotlin {
-    jvmToolchain(22)
+    jvmToolchain(21)
 }

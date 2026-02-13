@@ -5,12 +5,13 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="" />
+        <option name="gradleJvm" value="21" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/assembly-minecraft" />
             <option value="$PROJECT_DIR$/assembly-minecraft-mod" />
-            <option value="$PROJECT_DIR$/assembly-minecraft-mod/neoforge-1218" />
+            <option value="$PROJECT_DIR$/assembly-minecraft-mod/neoforge-1211" />
             <option value="$PROJECT_DIR$/assembly-minecraft-plugin" />
             <option value="$PROJECT_DIR$/assembly-minecraft-plugin/assembly-bukkit" />
             <option value="$PROJECT_DIR$/assembly-universal" />

@@ -1,10 +1,11 @@
 package net.bxx2004.assembly.application.server
 
+import net.bxx2004.assembly.Assembly
 import net.bxx2004.assembly.application.ResourceUtil
 import net.bxx2004.assembly.application.ResourceUtil.dir
 import net.bxx2004.assembly.application.ResourceUtil.expand
-import net.bxx2004.assembly.Assembly
 import net.bxx2004.assembly.application.entity.ResourceKey
+import net.bxx2004.assembly.application.entity.ResourceShowMissing
 import net.bxx2004.assembly.network.controller.PacketSender
 import net.bxx2004.assembly.network.packet.entity.AssemblyEntity
 import net.lingala.zip4j.ZipFile
@@ -70,5 +71,8 @@ object ServerResourceManager{
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+    fun showMissingResources(sender: PacketSender) {
+        AssemblyEntity.build<ResourceShowMissing>{  }.send(sender)
     }
 }

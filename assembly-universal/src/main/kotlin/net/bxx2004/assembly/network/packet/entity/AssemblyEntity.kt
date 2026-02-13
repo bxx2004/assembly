@@ -14,9 +14,16 @@ import net.bxx2004.assembly.utils.BreakUtils.gson
  */
 interface AssemblyEntity {
     fun id():AssemblyIdentifier
+
+    private fun setMeta(){
+        val meta = this::class.java.declaredFields.find { it.name == "meta" }!!
+        if (meta.get(this) != null) return
+        meta.isAccessible = true
+        meta.set(this,AssemblyPacketMeta(id()))
+    }
     fun toPacket(): AssemblyPacket {
         val res = AssemblyPacket(
-            AssemblyPacketMeta(id())
+            (this::class.java.declaredFields.find { it.name == "meta" }?.get(this)?:AssemblyPacketMeta(id())) as AssemblyPacketMeta
         )
         this::class.java.declaredFields.forEach { field ->
             if (field.name != "INSTANCE"){
@@ -32,6 +39,7 @@ interface AssemblyEntity {
 
     fun checkMeta(): AssemblyPacketMeta{
         return try {
+            setMeta()
             this::class.java.declaredFields.find { it.name == "meta" }!!.get(this) as AssemblyPacketMeta
         }catch (e:Exception){
             throw RuntimeException("entity must declared `meta` if you want to receive response.")
@@ -53,6 +61,14 @@ interface AssemblyEntity {
 inline fun <reified T: AssemblyEntity> AssemblyEntity.sendWithResponse(sender: PacketSender, crossinline func: T.() -> Unit) {
     val meta = checkMeta()
     Assembly.listenNextTransaction(meta.transaction){ sender,packet->
+        packet.bind<T>(func)
+    }
+    send(sender)
+}
+inline fun <reified T: AssemblyEntity> AssemblyEntity.sendWithResponse(sender: PacketSender, timeout:Long,
+                                                                       noinline timeFunc:()->Unit, crossinline func: T.() -> Unit) {
+    val meta = checkMeta()
+    Assembly.listenNextTransaction(meta.transaction,timeout,timeFunc){ sender,packet->
         packet.bind<T>(func)
     }
     send(sender)

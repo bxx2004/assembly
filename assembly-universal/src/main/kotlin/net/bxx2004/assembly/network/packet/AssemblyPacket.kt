@@ -2,6 +2,8 @@ package net.bxx2004.assembly.network.packet
 
 import com.google.gson.JsonObject
 import com.google.gson.internal.LinkedTreeMap
+import net.bxx2004.assembly.data.AssemblyIdentifier
+import net.bxx2004.assembly.data.AssemblyIdentifier.Companion.id
 import net.bxx2004.assembly.network.packet.entity.AssemblyEntity
 import net.bxx2004.assembly.utils.BreakUtils.gson
 
@@ -13,12 +15,12 @@ import net.bxx2004.assembly.utils.BreakUtils.gson
 open class AssemblyPacket(open val meta: AssemblyPacketMeta){
     private val data = HashMap<String, Any>()
     fun write(key:String, value:Any) : AssemblyPacket {
-        data.put(key, value)
+        data[key] = value
         return this
     }
     @Deprecated("unstable")
     fun <T>read(key:String): T {
-        return data.get(key) as T
+        return data[key] as T
     }
     inline fun <reified T : AssemblyEntity>bind(func:T.()->Unit){
         val clazz = T::class.java
@@ -86,6 +88,11 @@ open class AssemblyPacket(open val meta: AssemblyPacketMeta){
                     }
                     String::class.java -> {
                         field.set(obj, readString(field.name))
+                    }
+
+                    AssemblyIdentifier::class.java -> {
+                        val mp = read<Map<String,Any>>(field.name)
+                        field.set(obj,"${mp["namespace"]}:${mp["path"]}".id())
                     }
 
                     else -> {

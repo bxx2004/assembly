@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.bxx2004.assembly_neoforge.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+  ],
+  "client": [
+    "ClientPacketListenerMixin",
+    "FontMixin",
+    "KeyboardHandlerMixin",
+    "NetworkRegistryMixin",
+    "ResourceManagerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

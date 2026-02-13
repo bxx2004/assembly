@@ -16,4 +16,5 @@ class FunctionResponse : AssemblyEntity {
     }
     lateinit var meta: AssemblyPacketMeta
     var response: Any?=null
+    lateinit var appId:AssemblyIdentifier
 }

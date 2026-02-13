@@ -1,7 +1,8 @@
 package net.bxx2004.assembly.modules
 
 import net.bxx2004.script.module.IModule
-import kotlin.math.*
+import kotlin.math.ln
+import kotlin.math.pow
 import kotlin.random.Random
 
 
