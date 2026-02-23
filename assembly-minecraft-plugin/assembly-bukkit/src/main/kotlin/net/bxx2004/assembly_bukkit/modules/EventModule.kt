@@ -12,8 +12,9 @@ import taboolib.common.platform.Awake
  */
 @Awake(LifeCycle.INIT)
 object EventModule : IModule(){
+    override val isInject: Boolean = true
     override fun name(): Array<String> {
-        return arrayOf("event")
+        return arrayOf("BukkitEvent","event")
     }
     fun equal(event: Event,clazz: String): Boolean {
         return event.eventName == clazz

@@ -14,7 +14,7 @@ import net.bxx2004.assembly.data.AssemblyIdentifier.Companion.id
 open class TrueTypeFont : AssemblyInstance() {
     @Parser(AssemblyIdentifierParser, wrapper = false)
     override var id: AssemblyIdentifier = AssemblyIdentifier.random()
-    @Parser(AssemblyIdentifierParser, wrapper = false)
+    @Parser(ResourceParser, wrapper = false)
     var reference = "ref:font.ttf".id()
     @Parser(BooleanParser, wrapper = false)
     var global = false

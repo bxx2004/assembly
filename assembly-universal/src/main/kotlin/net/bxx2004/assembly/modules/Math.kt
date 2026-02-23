@@ -7,8 +7,10 @@ import kotlin.random.Random
 
 
 object Math : IModule() {
+    override val isInject: Boolean = true
+
     override fun name(): Array<String> {
-        return arrayOf("math")
+        return arrayOf("Math","math")
     }
 
     fun max(a: Number, b: Number): Number {

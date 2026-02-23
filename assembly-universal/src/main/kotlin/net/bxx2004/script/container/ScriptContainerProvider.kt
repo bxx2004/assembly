@@ -6,5 +6,6 @@ package net.bxx2004.script.container
  * @description: None
  */
 interface ScriptContainerProvider {
+
     var scriptContainer: ScriptContainer
 }

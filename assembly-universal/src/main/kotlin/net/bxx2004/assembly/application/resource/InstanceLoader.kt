@@ -33,17 +33,27 @@ object InstanceLoader {
 
     inline fun <reified T: AssemblyInstance>load(dir:String,app: AssemblyApplication){
         val files = getAllFile(dir,"conf")
-        log("将要注册 ${files.size} 个 ${app.id} 的实例.")
         files.map { parse<T>(it.inputStream()) }.forEach {
             if (it is ScriptContainerProvider){
                 it.scriptContainer.property("appId",app.id)
                 it.scriptContainer.property("insId",it.id)
-                println(it.scriptContainer)
             }
 
             app.registerServerInstance(it)
         }
     }
+
+    inline fun <reified T: AssemblyInstance>loadSingle(file:String,app: AssemblyApplication){
+        val tar = File(Assembly.DATA_DIR, file)
+        log("将要注册 1 个 ${app.id} 的实例.")
+        val ins = parse<T>(tar.inputStream())
+        if (ins is ScriptContainerProvider){
+            ins.scriptContainer.property("appId",app.id)
+            ins.scriptContainer.property("insId",ins.id)
+        }
+        app.registerServerInstance(ins)
+    }
+
 
     fun getAllFile(dir:String,ext: String = "*"):List<File>{
         val tar = File(Assembly.DATA_DIR, dir)

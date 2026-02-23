@@ -17,6 +17,8 @@ annotation class Parser(
 
 private const val innerName = "net.bxx2004.assembly.application.resource.ehc.parsers."
 const val AssemblyIdentifierParser = "${innerName}AssemblyIdentifierParser"
+const val ResourceParser = "${innerName}ResourceParser"
+
 const val BooleanParser = "${innerName}BooleanParser"
 const val DoubleParser = "${innerName}DoubleParser"
 const val FloatParser = "${innerName}FloatParser"

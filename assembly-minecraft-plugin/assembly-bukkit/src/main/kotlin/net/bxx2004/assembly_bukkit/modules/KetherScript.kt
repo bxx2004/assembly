@@ -13,8 +13,9 @@ import taboolib.module.kether.ScriptOptions
 
 @Awake(LifeCycle.INIT)
 object KetherScript : IModule() {
+    override val isInject: Boolean = true
     override fun name(): Array<String> {
-        return arrayOf("kether", "Kether", "KetherScript", "ketherscript", "ks", "kether-script", "kether_script")
+        return arrayOf("Kether", "kether", "KetherScript", "ketherscript", "ks", "kether-script", "kether_script")
     }
 
 

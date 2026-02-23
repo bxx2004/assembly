@@ -21,7 +21,16 @@ interface ElementParser<T> {
 }
 
 inline fun <reified T>parse(conf: Config):T{
-    val obj = T::class.java.getDeclaredConstructor().newInstance()
+    val cls = T::class.java
+
+    val hasInst = cls.declaredFields.map { it.name }.contains("INSTANCE")
+    val obj = if (hasInst){
+        cls.getDeclaredField("INSTANCE").also {
+            it.isAccessible = true
+        }.get(null) as T
+    }else{
+        cls.getDeclaredConstructor().newInstance()
+    }!!
     obj::class.java.findAllFields().forEach { field ->
         field.isAccessible = true
         val anno = field.declaredAnnotations.filterIsInstance<Parser>().firstOrNull()
@@ -75,7 +84,14 @@ inline fun <reified T>parse(stream: InputStream): T {
 }
 
 fun <T>parse(cls: Class<T>, conf: Config):T{
-    val obj = cls.getDeclaredConstructor().newInstance()
+    val hasInst = cls.declaredFields.map { it.name }.contains("INSTANCE")
+    val obj = if (hasInst){
+        cls.getDeclaredField("INSTANCE").also {
+            it.isAccessible = true
+        }.get(null) as T
+    }else{
+        cls.getDeclaredConstructor().newInstance()
+    }!!
     obj::class.java.findAllFields().forEach { field ->
         field.isAccessible = true
         val anno = field.declaredAnnotations.filterIsInstance<Parser>().firstOrNull()

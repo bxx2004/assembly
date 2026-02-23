@@ -9,6 +9,7 @@ import net.bxx2004.script.module.IModule
  * @description: None
  */
 object JSON  : IModule() {
+    override val isInject: Boolean = true
     override fun name(): Array<String> {
         return arrayOf("JSON","json")
     }

@@ -15,8 +15,10 @@ import taboolib.platform.util.bukkitPlugin
 
 @Awake
 object BukkitUtil : IModule(){
+    override val isInject: Boolean = true
+
     override fun name(): Array<String> {
-        return arrayOf("bukkit-util")
+        return arrayOf("BukkitUtil","bukkit-util")
     }
     fun commandAsAdmin(player: Player,command:String){
         player.dispatchCommandAsOp(command)

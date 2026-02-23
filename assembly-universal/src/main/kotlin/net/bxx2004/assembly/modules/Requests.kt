@@ -19,8 +19,9 @@ import kotlin.concurrent.thread
  * @description: None
  */
 object Requests : IModule(){
+    override val isInject: Boolean = true
     override fun name(): Array<String> {
-        return arrayOf("request","requests")
+        return arrayOf("Request","request")
     }
     fun custom(sender: PacketSender, path:String, data:Map<String,Any?>, func: AssemblyEntity.() -> Unit){
         AssemblyEntity.build<CustomRequest> {

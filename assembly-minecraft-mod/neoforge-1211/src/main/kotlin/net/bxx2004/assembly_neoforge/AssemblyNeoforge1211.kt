@@ -6,10 +6,13 @@ import net.bxx2004.assembly.AssemblyRegister.Companion.registerClientInstance
 import net.bxx2004.assembly_minecraft.application.font.FontApplication
 import net.bxx2004.assembly.data.Side
 import net.bxx2004.assembly_minecraft.application.key.KeyApplication
+import net.bxx2004.assembly_minecraft.application.window.WindowApplication
 import net.bxx2004.assembly_neoforge.api.AssemblyPacketReceiveEvent
 import net.bxx2004.assembly_neoforge.api.AssemblyRegisterEvent
 import net.bxx2004.assembly_neoforge.application.font.NTrueTypeFont
 import net.bxx2004.assembly_neoforge.application.key.NSimpleKey
+import net.bxx2004.assembly_neoforge.application.window.NWindowIcon
+import net.bxx2004.assembly_neoforge.application.window.NWindowTitle
 
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
@@ -53,5 +56,8 @@ object AssemblyNeoforge1211 {
             .registerClientInstance(NTrueTypeFont::class.java)
         reg.application(KeyApplication)
             .registerClientInstance(NSimpleKey::class.java)
+        reg.application(WindowApplication)
+            .registerClientInstance(NWindowTitle::class.java)
+            .registerClientInstance(NWindowIcon::class.java)
     }
 }

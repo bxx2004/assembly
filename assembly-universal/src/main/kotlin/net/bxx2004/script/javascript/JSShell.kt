@@ -1,6 +1,7 @@
 package net.bxx2004.script.javascript
 
 import net.bxx2004.script.*
+import net.bxx2004.script.module.IModule
 import net.bxx2004.script.module.InstallAPI
 import net.bxx2004.script.source.ThorSource
 import org.openjdk.nashorn.api.scripting.NashornScriptEngine
@@ -12,6 +13,13 @@ class JSShell(val options: ThorOptions = ThorOptions.default()):ThorShell {
     private val engine = NashornScriptEngineFactory().getScriptEngine(options.CLASS_LOADER) as NashornScriptEngine
     init {
         injectVariable(hashMapOf(Pair("install", InstallAPI(this))))
+        injectVariable(
+            mapOf(
+                *IModule.modules.filter { it.isInject }.map {
+                    it.name().first() to it
+                }.toTypedArray()
+            )
+        )
     }
     override fun options(): ThorOptions {
         return options
