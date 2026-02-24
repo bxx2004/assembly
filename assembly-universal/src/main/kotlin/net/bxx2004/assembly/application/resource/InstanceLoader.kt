@@ -9,10 +9,10 @@ import net.bxx2004.assembly.application.resource.ehc.parse
 import net.bxx2004.assembly.application.server.ServerInstanceManager.removeAllInstance
 import net.bxx2004.assembly.application.server.ServerInstanceManager.sync
 import net.bxx2004.assembly.network.controller.PacketSender
-import net.bxx2004.assembly.utils.log
 import net.bxx2004.assembly.utils.property
 import net.bxx2004.script.container.ScriptContainerProvider
 import java.io.File
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * @author 6hisea
@@ -20,6 +20,7 @@ import java.io.File
  * @description: None
  */
 object InstanceLoader {
+
     inline fun <reified T: AssemblyInstance>reload(dir:String,app: AssemblyApplication,sender: List<PacketSender> = ArrayList()){
         sender.forEach {
             app.removeAllInstance(it)
@@ -33,20 +34,27 @@ object InstanceLoader {
 
     inline fun <reified T: AssemblyInstance>load(dir:String,app: AssemblyApplication){
         val files = getAllFile(dir,"conf")
-        files.map { parse<T>(it.inputStream()) }.forEach {
-            if (it is ScriptContainerProvider){
-                it.scriptContainer.property("appId",app.id)
-                it.scriptContainer.property("insId",it.id)
-            }
-
-            app.registerServerInstance(it)
+        files.forEach {
+            loadSingle<T>(it,app)
+        }
+    }
+    fun load(dir:String,app: AssemblyApplication,cls: Class<out AssemblyInstance>){
+        val files = getAllFile(dir,"conf")
+        files.forEach {
+            loadSingle(it,app,cls)
         }
     }
 
-    inline fun <reified T: AssemblyInstance>loadSingle(file:String,app: AssemblyApplication){
-        val tar = File(Assembly.DATA_DIR, file)
-        log("将要注册 1 个 ${app.id} 的实例.")
+    inline fun <reified T: AssemblyInstance>loadSingle(tar:File,app: AssemblyApplication){
         val ins = parse<T>(tar.inputStream())
+        if (ins is ScriptContainerProvider){
+            ins.scriptContainer.property("appId",app.id)
+            ins.scriptContainer.property("insId",ins.id)
+        }
+        app.registerServerInstance(ins)
+    }
+    fun loadSingle(tar:File,app: AssemblyApplication,cls: Class<out AssemblyInstance>){
+        val ins = parse(cls,tar.inputStream())
         if (ins is ScriptContainerProvider){
             ins.scriptContainer.property("appId",app.id)
             ins.scriptContainer.property("insId",ins.id)

@@ -10,6 +10,7 @@ import net.bxx2004.assembly.application.entity.InstanceDeleteAll
 import net.bxx2004.assembly.data.AssemblyIdentifier
 import net.bxx2004.assembly.network.controller.PacketSender
 import net.bxx2004.assembly.network.packet.entity.AssemblyEntity
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * @author 6hisea
@@ -17,6 +18,13 @@ import net.bxx2004.assembly.network.packet.entity.AssemblyEntity
  * @description: None
  */
 object ServerInstanceManager{
+    val reloadRepo = ConcurrentHashMap<AssemblyApplication, ArrayList<()-> Unit>>()
+    fun reloadServerInstance(app: AssemblyApplication) {
+        (app.instances as ArrayList<AssemblyInstance>).clear()
+        reloadRepo[app]?.forEach {
+            it()
+        }
+    }
     fun registerServerInstance(app: AssemblyApplication, instance: AssemblyInstance) {
         (app.instances as ArrayList<AssemblyInstance>).add(instance)
     }

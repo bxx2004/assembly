@@ -45,6 +45,7 @@ object Assembly {
     private var isInitialized = false
 
     fun registerApplication(application:AssemblyApplication) {
+        if (applications.contains(application)) return
         applications.add(application)
     }
     fun getApplications(): List<AssemblyApplication> {

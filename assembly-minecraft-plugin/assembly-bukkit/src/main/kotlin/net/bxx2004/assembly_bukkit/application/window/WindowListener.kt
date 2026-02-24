@@ -9,6 +9,7 @@ import net.bxx2004.assembly.data.AssemblyIdentifier.Companion.id
 import net.bxx2004.assembly_bukkit.BukkitSender.Companion.asPacketSender
 import net.bxx2004.assembly_bukkit.api.AssemblyCommandRegisterEvent
 import net.bxx2004.assembly_bukkit.api.AssemblyRegisterEvent
+import net.bxx2004.assembly_bukkit.tlibm.commondhelper.description
 import net.bxx2004.assembly_bukkit.utils.addInstance
 import net.bxx2004.assembly_minecraft.application.window.WindowApplication
 import net.bxx2004.assembly_minecraft.application.window.instances.WindowIcon

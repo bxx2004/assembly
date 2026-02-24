@@ -10,6 +10,7 @@ import net.bxx2004.assembly.core.tool.Tool
 import net.bxx2004.assembly.data.Side
 import net.bxx2004.assembly.network.controller.PacketReceiver
 import net.bxx2004.assembly.network.controller.PacketSender
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
@@ -50,13 +51,13 @@ class AssemblyRegister {
 
         inline fun <reified T: AssemblyInstance>AssemblyApplication.registerServerInstanceFromLocal(dir: String):AssemblyApplication {
             if (Assembly.side == Side.SERVER){
-                InstanceLoader.load<T>(dir,this)
-            }
-            return this
-        }
-        inline fun <reified T: AssemblyInstance>AssemblyApplication.reloadServerInstanceFromLocal(dir: String,senders: List<PacketSender>):AssemblyApplication {
-            if (Assembly.side == Side.SERVER){
-                InstanceLoader.reload<T>(dir,this,senders)
+                if (!ServerInstanceManager.reloadRepo.contains(this)){
+                    ServerInstanceManager.reloadRepo[this] = ArrayList()
+                }
+                ServerInstanceManager.reloadRepo[this]!!.add {
+                    InstanceLoader.load<T>(dir, this)
+                }
+                InstanceLoader.load<T>(dir, this)
             }
             return this
         }

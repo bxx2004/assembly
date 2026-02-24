@@ -18,7 +18,6 @@ dependencies {
     implementation("org.openjdk.nashorn:nashorn-core:15.4")
     implementation("com.madgag:animated-gif-lib:1.4")
     implementation("com.github.goxr3plus:java-stream-player:10.0.2")
-    implementation("org.appliedenergistics.yoga:yoga:1.0.0")
     implementation("com.typesafe:config:1.4.5")
 }
 

@@ -32,12 +32,10 @@ abstract class AssemblyApplication : PacketReceiver{
     abstract val side: Side
     abstract val id:AssemblyIdentifier
     private val functions = ArrayList<Method>()
-
     init {
         Assembly.register {
             listener(this@AssemblyApplication)
         }
-
     }
 
     fun registerFunction(function: Method){

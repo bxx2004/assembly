@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     java
-    id("io.izzel.taboolib") version "2.0.27"
+    id("io.izzel.taboolib") version "2.0.31"
     id("org.jetbrains.kotlin.jvm") version "2.3.0"
 }
 
@@ -26,7 +26,7 @@ taboolib {
         }
     }
     version {
-        taboolib = "6.2.3-d4a5f0ea"
+        taboolib = "6.2.4-99fb800"
         //skipKotlinRelocate = true
     }
 }
@@ -44,8 +44,12 @@ dependencies {
     compileOnly(kotlin("stdlib"))
     compileOnly(fileTree("libs"))
     compileOnly("io.netty:netty-all:5.0.0.Alpha2")
-    taboo(project(":assembly-minecraft"))
-    taboo(project(":assembly-universal"))
+    taboo(project(":assembly-minecraft")){
+        isTransitive = false
+    }
+    taboo(project(":assembly-universal")){
+        isTransitive = false
+    }
 }
 
 tasks.withType<JavaCompile> {

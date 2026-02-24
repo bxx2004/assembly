@@ -12,6 +12,8 @@ import net.bxx2004.assembly_bukkit.api.PlayerConnectionEvent
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerJoinEvent
+import taboolib.common.env.RuntimeDependencies
+import taboolib.common.env.RuntimeDependency
 import taboolib.common.platform.Plugin
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.releaseResourceFile
@@ -20,10 +22,18 @@ import taboolib.module.configuration.Config
 import taboolib.module.configuration.Configuration
 import taboolib.platform.util.bukkitPlugin
 import java.io.File
-
+@RuntimeDependencies(
+    RuntimeDependency("org.apache.commons:commons-crypto:1.2.0"),
+    RuntimeDependency("net.lingala.zip4j:zip4j:2.11.5"),
+    RuntimeDependency("org.openjdk.nashorn:nashorn-core:15.4", relocate = ["!org.objectweb.asm", "!org.objectweb.asm9"]),
+    RuntimeDependency("com.typesafe:config:1.4.5")
+)
 object AssemblyBukkit : Plugin() {
     @Config("options.yml", migrate = true, autoReload = true)
     lateinit var options: Configuration
+        private set
+    @Config("lang.yml", migrate = true, autoReload = true)
+    lateinit var lang: Configuration
         private set
     override fun onEnable() {
         Assembly.init(Side.SERVER){ sender, packet ->
@@ -40,6 +50,7 @@ object AssemblyBukkit : Plugin() {
         File(Assembly.DATA_DIR).mkdirs()
 
         releaseResourceFile("options.yml")
+        releaseResourceFile("lang.yml")
         Bukkit.getMessenger().registerIncomingPluginChannel(bukkitPlugin, Assembly.CHANNEL){ channel, player, bytes->
             if (channel == Assembly.CHANNEL){
                 val buf = Unpooled.wrappedBuffer(bytes)
